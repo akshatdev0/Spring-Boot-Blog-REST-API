@@ -1,6 +1,8 @@
 package com.sopromadze.blogapi;
 
 import com.sopromadze.blogapi.security.JwtAuthenticationFilter;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,4 +37,8 @@ public class BlogApiApplication {
 		return new ModelMapper();
 	}
 
+	@Bean
+	public OpenTelemetry openTelemetry() {
+		return AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+	}
 }
