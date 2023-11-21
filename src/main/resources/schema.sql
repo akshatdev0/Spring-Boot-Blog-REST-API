@@ -1,4 +1,4 @@
-UNLOCK TABLES;
+--UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `post_tag`;
 DROP TABLE IF EXISTS `tags`;
@@ -125,18 +125,28 @@ CREATE TABLE `photos` (
   CONSTRAINT `fk_album` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `categories` (
+  `id` bigint(19) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 CREATE TABLE `posts` (
   `id` bigint(19) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `body` text NOT NULL,
   `user_id` bigint(19) unsigned DEFAULT NULL,
+  `category_id` bigint(19) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` bigint(19) unsigned DEFAULT NULL,
   `updated_by` bigint(19) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_post` (`user_id`),
-  CONSTRAINT `fk_user_post` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `fk_user_post` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_category_post` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `post_tag` (
@@ -185,6 +195,6 @@ CREATE TABLE `user_role` (
   CONSTRAINT `fk_security_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-LOCK TABLES `roles` WRITE;
+--LOCK TABLES `roles` WRITE;
 INSERT INTO `roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
-UNLOCK TABLES;
+--UNLOCK TABLES;
