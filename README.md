@@ -16,14 +16,14 @@ git clone https://github.com/coma123/Spring-Boot-Blog-REST-API.git
 mvn clean install
 ```
 
-**3. Run Jaeger using "docker-compose"
+**3. Run Jaeger using "docker-compose"**
 
 ```bash
 docker compose -f docker-compose-jaeger.yml up
 ```
 The Jaeger UI will be running at <http://localhost:16686>
 
-**4. Run the application with below command having service name as "s1"
+**4. Run the application with below command having service name as "s1"**
 
 ```bash
 java -javaagent:lib/opentelemetry-javaagent.jar \
@@ -46,6 +46,9 @@ The app defines following CRUD APIs.
 | ------ | --- | ---------- | --------------------------- |
 | POST   | /api/auth/signup | Sign up | [JSON](#signup) |
 | POST   | /api/auth/signin | Log in | [JSON](#signin) |
+
+Use the `accessToken` returned in the response of request `/api/auth/signin` 
+as "bearer token" in other authenticated APIs.
 
 ### Users
 
