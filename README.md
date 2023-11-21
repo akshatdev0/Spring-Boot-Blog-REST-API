@@ -1,8 +1,6 @@
-[![Build Status](https://travis-ci.com/coma123/Spring-Boot-Blog-REST-API.svg?branch=development)](https://travis-ci.com/coma123/Spring-Boot-Blog-REST-API) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=coma123_Spring-Boot-Blog-REST-API&metric=alert_status)](https://sonarcloud.io/dashboard?id=coma123_Spring-Boot-Blog-REST-API) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3706/badge)](https://bestpractices.coreinfrastructure.org/projects/3706)
+# OpenTelemetry with Spring Boot, H2, Spring Security, JWT, JPA, Rest API
 
-# Spring Boot, MySQL, Spring Security, JWT, JPA, Rest API
-
-Build Restful CRUD API for a blog using Spring Boot, Mysql, JPA and Hibernate.
+Applying OpenTelemetry on Restful CRUD API for a blog using Spring Boot, H2, JPA and Hibernate.
 
 ## Steps to Setup
 
@@ -12,23 +10,31 @@ Build Restful CRUD API for a blog using Spring Boot, Mysql, JPA and Hibernate.
 git clone https://github.com/coma123/Spring-Boot-Blog-REST-API.git
 ```
 
-**2. Create Mysql database**
-```bash
-create database blogapi
-```
-- run `src/main/resources/blogapi.sql`
-
-**3. Change mysql username and password as per your installation**
-
-+ open `src/main/resources/application.properties`
-+ change `spring.datasource.username` and `spring.datasource.password` as per your mysql installation
-
-**4. Run the app using maven**
+**2. Run below command**
 
 ```bash
-mvn spring-boot:run
+mvn clean install
 ```
-The app will start running at <http://localhost:8080>
+
+**3. Run Jaeger using "docker-compose"
+
+```bash
+docker compose -f docker-compose-jaeger.yml up
+```
+The Jaeger UI will be running at <http://localhost:16686>
+
+**4. Run the application with below command having service name as "s1"
+
+```bash
+java -javaagent:lib/opentelemetry-javaagent.jar \
+    -Dotel.service.name=s1 \
+    -Dotel.metrics.exporter=none \
+    -Dotel.traces.exporter=jaeger \
+    -Dotel.exporter.jaeger.endpoint=http://localhost:14250 \
+    -jar target/blogapi-0.0.1-SNAPSHOT.jar
+```
+
+**5. Reload Jaeger UI and search traces for our "s1" service
 
 ## Explore Rest APIs
 
